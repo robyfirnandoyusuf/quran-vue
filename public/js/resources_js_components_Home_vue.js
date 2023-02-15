@@ -109,17 +109,13 @@ var staticRenderFns = [function () {
     staticClass: "row mt-3"
   }, [_c("div", {
     staticClass: "col-12 col-md-12 col-lg-12 p-1"
-  }, [_c("a", {
-    attrs: {
-      href: "/surat/1"
-    }
   }, [_c("div", {
     staticClass: "p-4 bg-success text-white text-center",
     staticStyle: {
       "background-color": "#8BC34A",
       "font-size": "30px"
     }
-  }, [_vm._v("\n                    بِسْــــــــــــــــــمِ اللهِ الرَّحْمَنِ الرَّحِيْمِ\n                ")])])])]);
+  }, [_vm._v("\n                بِسْــــــــــــــــــمِ اللهِ الرَّحْمَنِ الرَّحِيْمِ\n            ")])])]);
 }];
 render._withStripped = true;
 

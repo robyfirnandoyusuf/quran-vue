@@ -25,7 +25,7 @@
         </div>
         <div class="col-md-12 mb-2" v-for="(s, index) in dataAyat" :key="index">
             <div class="p-4 bg-light border border-success">
-                <p class="mb-5 text-success">2:{{ s.nomorAyat }}</p>
+                <p class="mb-5 text-success">{{ nomor }}:{{ s.nomorAyat }}</p>
                 <p class="text-right text-success">
                     <audio src="https://equran.nos.wjv-1.neo.id/audio-partial/Misyari-Rasyid-Al-Afasi/002001.mp3"></audio>
                     <button class="teks-arab ml-auto">{{ s.teksArab }}</button>
@@ -47,7 +47,8 @@ export default {
     data(){
         return{
             dataAyat: [],
-            dataSurah: []
+            dataSurah: [],
+            nomor: null
         }
     },
     mounted(){
@@ -59,6 +60,7 @@ export default {
                 this.dataAyat = JSON.parse(response.data.data).data.ayat
                 console.log(this.dataAyat)
                 this.dataSurah = JSON.parse(response.data.data).data
+                this.nomor = this.$route.params.nomor
             }).catch(error=>{
                 console.log(error)
                 this.dataAyat = []

@@ -20,7 +20,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       dataAyat: [],
-      dataSurah: []
+      dataSurah: [],
+      nomor: null
     };
   },
   mounted: function mounted() {
@@ -38,6 +39,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.dataAyat = JSON.parse(response.data.data).data.ayat;
                 console.log(_this.dataAyat);
                 _this.dataSurah = JSON.parse(response.data.data).data;
+                _this.nomor = _this.$route.params.nomor;
               })["catch"](function (error) {
                 console.log(error);
                 _this.dataAyat = [];
@@ -79,7 +81,7 @@ var render = function render() {
       staticClass: "p-4 bg-light border border-success"
     }, [_c("p", {
       staticClass: "mb-5 text-success"
-    }, [_vm._v("2:" + _vm._s(s.nomorAyat))]), _vm._v(" "), _c("p", {
+    }, [_vm._v(_vm._s(_vm.nomor) + ":" + _vm._s(s.nomorAyat))]), _vm._v(" "), _c("p", {
       staticClass: "text-right text-success"
     }, [_c("audio", {
       attrs: {

@@ -2,11 +2,9 @@
     <div class="col-md-12">
         <div class="row mt-3">
             <div class="col-12 col-md-12 col-lg-12 p-1">
-                <a href="/surat/1">
-                    <div class="p-4 bg-success text-white text-center" style="background-color: #8BC34A;font-size:30px;">
-                        بِسْــــــــــــــــــمِ اللهِ الرَّحْمَنِ الرَّحِيْمِ
-                    </div>
-                </a>
+                <div class="p-4 bg-success text-white text-center" style="background-color: #8BC34A;font-size:30px;">
+                    بِسْــــــــــــــــــمِ اللهِ الرَّحْمَنِ الرَّحِيْمِ
+                </div>
             </div>
         </div>
     
