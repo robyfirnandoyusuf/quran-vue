@@ -43,7 +43,7 @@ const router = new VueRouter({
     mode: 'history',
     routes: routes
 });
-Vue.prototype.url = 'http://127.0.0.1:8000'
+Vue.prototype.url = ''
 
 const app = new Vue({
     el: '#app',
