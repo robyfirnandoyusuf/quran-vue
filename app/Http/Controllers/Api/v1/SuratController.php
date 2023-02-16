@@ -56,6 +56,12 @@ class SuratController extends Controller
         return $this->successResponse($response->body());
     }
 
+    public function tafsir($nomor)
+    {
+        $response = Http::acceptJson()->get('https://equran.id/api/v2/tafsir/'.$nomor);
+        return $this->successResponse($response->body());
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

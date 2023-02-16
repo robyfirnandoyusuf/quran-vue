@@ -38,12 +38,13 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
- 
+
 const router = new VueRouter({
     mode: 'history',
     routes: routes
 });
- 
+Vue.prototype.url = 'http://127.0.0.1:8000'
+
 const app = new Vue({
     el: '#app',
     router: router,

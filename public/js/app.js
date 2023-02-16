@@ -5484,6 +5484,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_4__["default"]({
   mode: 'history',
   routes: _routes__WEBPACK_IMPORTED_MODULE_3__.routes
 });
+Vue.prototype.url = 'http://127.0.0.1:8000';
 var app = new Vue({
   el: '#app',
   router: router,
@@ -5550,6 +5551,9 @@ var Home = function Home() {
 var Detail = function Detail() {
   return __webpack_require__.e(/*! import() */ "resources_js_components_Detail_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/Detail.vue */ "./resources/js/components/Detail.vue"));
 };
+var Tafsir = function Tafsir() {
+  return __webpack_require__.e(/*! import() */ "resources_js_components_Tafsir_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/Tafsir.vue */ "./resources/js/components/Tafsir.vue"));
+};
 var routes = [{
   name: 'home',
   path: '/',
@@ -5558,6 +5562,10 @@ var routes = [{
   name: 'detail',
   path: '/surah/:nomor',
   component: Detail
+}, {
+  name: 'tafsir',
+  path: '/tafsir/:nomor',
+  component: Tafsir
 }];
 
 /***/ }),
@@ -43738,7 +43746,7 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_components_Home_vue":1,"resources_js_components_Detail_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_components_Home_vue":1,"resources_js_components_Detail_vue":1,"resources_js_components_Tafsir_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

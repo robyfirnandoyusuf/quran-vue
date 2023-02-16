@@ -21,11 +21,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       dataAyat: [],
       dataSurah: [],
-      nomor: null
+      nomor: null,
+      selectedOption: '05',
+      audio: '',
+      audioFull: ''
     };
   },
   mounted: function mounted() {
     this.getAyat();
+  },
+  computed: {
+    showSelectedOption: function showSelectedOption() {
+      // alert('You selected ' + this.selectedOption);
+      console.log(this.selectedOption);
+    }
+  },
+  watch: {
+    selectedOption: function selectedOption() {
+      this.showSelectedOption;
+    }
   },
   methods: {
     getAyat: function getAyat() {
@@ -35,11 +49,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return _this.axios.get('http://127.0.0.1:8000/api/v1/get-surah/' + _this.$route.params.nomor).then(function (response) {
-                _this.dataAyat = JSON.parse(response.data.data).data.ayat;
-                console.log(_this.dataAyat);
+              return _this.axios.get(_this.url + '/api/v1/get-surah/' + _this.$route.params.nomor).then(function (response) {
+                var ayat = JSON.parse(response.data.data).data.ayat;
+                _this.dataAyat = ayat;
                 _this.dataSurah = JSON.parse(response.data.data).data;
                 _this.nomor = _this.$route.params.nomor;
+                // console.log(this.dataSurah)
+                _this.audioFull = _this.dataSurah.audioFull[_this.selectedOption];
               })["catch"](function (error) {
                 console.log(error);
                 _this.dataAyat = [];
@@ -51,6 +67,36 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee);
       }))();
+    },
+    toggleSoundAyat: function toggleSoundAyat(idx) {
+      var audio = this.$refs['audioElm-' + idx][0];
+      if (audio.paused && document.querySelector(".toggle-sound-" + idx).classList.contains("paused")) {
+        console.log("play it");
+        audio.play();
+        document.querySelector(".toggle-sound-" + idx).classList.remove("paused");
+      } else {
+        console.log("pause it");
+        audio.pause();
+        document.querySelector(".toggle-sound-" + idx).classList.add("paused");
+      }
+      audio.onended = function () {
+        document.querySelector(".toggle-sound-" + idx).classList.add("paused");
+      };
+    },
+    toggleSoundFull: function toggleSoundFull() {
+      var audio = this.$refs.audioElmFull;
+      console.log(audio);
+      if (audio.paused && document.querySelector(".toggle-sound-full").classList.contains("paused")) {
+        audio.play();
+        audio.addEventListener('ended', function () {
+          alert(1);
+        });
+        document.querySelector(".toggle-sound-full").classList.remove("paused");
+      } else {
+        console.log("pause it");
+        audio.pause();
+        document.querySelector(".toggle-sound-full").classList.add("paused");
+      }
     }
   }
 });
@@ -73,7 +119,88 @@ var render = function render() {
     _c = _vm._self._c;
   return _c("div", {
     staticClass: "col-md-12"
-  }, [_vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._l(_vm.dataAyat, function (s, index) {
+  }, [_c("div", {
+    staticClass: "flex flex-wrap mt-2 bg-success"
+  }, [_c("div", {
+    staticClass: "col-12 p-1"
+  }, [_c("div", {
+    staticClass: "p-4 text-white dark:text-black"
+  }, [_c("p", {
+    staticClass: "h1 font-weight-bold mb-2 text-center"
+  }, [_vm._v(_vm._s(_vm.dataSurah.namaLatin) + " • " + _vm._s(_vm.dataSurah.nama))]), _vm._v(" "), _c("p", {
+    staticClass: "h6 text-center"
+  }, [_vm._v(_vm._s(_vm.dataSurah.tempatTurun) + " • " + _vm._s(_vm.dataSurah.arti) + " • " + _vm._s(_vm.dataSurah.jumlahAyat) + " Ayat")]), _vm._v(" "), _c("p", {
+    staticClass: "mt-5"
+  }, [_c("audio", {
+    ref: "audioElmFull",
+    attrs: {
+      src: _vm.audioFull
+    }
+  }), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-outline-dark border-button-active-light hover-scale p-2 text-sm font-weight-bold toggle-sound-full paused bg-white",
+    on: {
+      click: function click($event) {
+        return _vm.toggleSoundFull();
+      }
+    }
+  }, [_vm._v("▶️\n                        Audio")]), _vm._v(" "), _c("router-link", {
+    attrs: {
+      to: {
+        name: "tafsir",
+        params: {
+          nomor: _vm.nomor
+        }
+      },
+      "exact-active-class": "exact-active"
+    }
+  }, [_c("button", {
+    staticClass: "btn btn-light border-dark hover-scale p-2 text-sm font-weight-bold ml-1"
+  }, [_vm._v("📃Tafsir\n                        ")])])], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "d-flex flex-wrap mt-2 bg-primary-green-light bg-success"
+  }, [_c("div", {
+    staticClass: "w-100 p-1"
+  }, [_c("div", {
+    staticClass: "px-3 text-sm text-white text-center"
+  }, [_c("p", [_c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.selectedOption,
+      expression: "selectedOption"
+    }],
+    staticClass: "form form-control",
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.selectedOption = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "01"
+    }
+  }, [_vm._v("Abdullah Al Juhany")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "02"
+    }
+  }, [_vm._v("Abdul Muhsin Al Qasim")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "03"
+    }
+  }, [_vm._v("Abdurrahman as Sudais")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "04"
+    }
+  }, [_vm._v("Ibrahim Al Dossari")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "05"
+    }
+  }, [_vm._v("Misyari Rasyid Al-Afasi")])])])])])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _vm._l(_vm.dataAyat, function (s, index) {
     return _c("div", {
       key: index,
       staticClass: "col-md-12 mb-2"
@@ -82,17 +209,24 @@ var render = function render() {
     }, [_c("p", {
       staticClass: "mb-5 text-success"
     }, [_vm._v(_vm._s(_vm.nomor) + ":" + _vm._s(s.nomorAyat))]), _vm._v(" "), _c("p", {
-      staticClass: "text-right text-success"
+      staticClass: "text-end text-success"
     }, [_c("audio", {
+      ref: "audioElm-" + index,
+      refInFor: true,
       attrs: {
-        src: "https://equran.nos.wjv-1.neo.id/audio-partial/Misyari-Rasyid-Al-Afasi/002001.mp3"
+        src: _vm.dataAyat[index].audio[_vm.selectedOption]
       }
     }), _vm._v(" "), _c("button", {
-      staticClass: "teks-arab ml-auto"
+      "class": "teks-arab ml-auto toggle-sound-" + index + " paused",
+      on: {
+        click: function click($event) {
+          return _vm.toggleSoundAyat(index);
+        }
+      }
     }, [_vm._v(_vm._s(s.teksArab))])]), _vm._v(" "), _c("p", {
-      staticClass: "text-left text-primary-hover-light text-sm font-semibold"
-    }, [_vm._v(_vm._s(s.teksLatin))]), _vm._v(" "), _vm._m(2, true), _vm._v(" "), _c("p", {
-      staticClass: "text-left text-primary-hover-light text-sm text-justify"
+      staticClass: "text-end text-primary-hover-light text-sm font-semibold"
+    }, [_vm._v(_vm._s(s.teksLatin))]), _vm._v(" "), _vm._m(1, true), _vm._v(" "), _c("p", {
+      staticClass: "text-end text-primary-hover-light text-sm text-justify"
     }, [_vm._v(_vm._s(s.teksIndonesia))])])]);
   })], 2);
 };
@@ -100,39 +234,11 @@ var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("div", {
-    staticClass: "flex flex-wrap mt-2 bg-success"
-  }, [_c("div", {
-    staticClass: "col-12 p-1"
-  }, [_c("div", {
-    staticClass: "p-4 text-white dark:text-black"
-  }, [_c("p", {
-    staticClass: "h1 font-weight-bold mb-2 text-center"
-  }, [_vm._v("Al-Baqarah • البقرة")]), _vm._v(" "), _c("p", {
-    staticClass: "h6 text-center"
-  }, [_vm._v("Madinah • Sapi • 286 Ayat")]), _vm._v(" "), _c("p", {
-    staticClass: "mt-5"
-  }, [_c("audio", {
-    attrs: {
-      src: "https://equran.nos.wjv-1.neo.id/audio-full/Misyari-Rasyid-Al-Afasi/002.mp3"
-    }
-  }), _vm._v(" "), _c("button", {
-    staticClass: "btn btn-outline-dark border-button-active-light hover-scale p-2 text-sm font-weight-bold"
-  }, [_vm._v("▶️\n                        Audio")]), _vm._v(" "), _c("a", {
-    attrs: {
-      href: "/tafsir/2"
-    }
-  }, [_c("button", {
-    staticClass: "btn btn-light border-dark hover-scale p-2 text-sm font-weight-bold ml-1"
-  }, [_vm._v("📃Tafsir")])])])])])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("div", {
     staticClass: "d-flex flex-wrap mt-2 bg-primary-green-light bg-success"
   }, [_c("div", {
     staticClass: "w-100 p-1"
   }, [_c("div", {
-    staticClass: "px-3 text-sm text-white dark:text-gray-800 text-center"
+    staticClass: "px-3 text-sm text-white text-center"
   }, [_c("p", [_vm._v("Klik pada teks arab untuk mendengarkan audio per-ayat.")])])])]);
 }, function () {
   var _vm = this,

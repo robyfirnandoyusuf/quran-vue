@@ -28,4 +28,9 @@ Route::group(['prefix'=>'v1','as'=>'surah.'], function(){
         'as' => 'get-surah-by-nomor',
         'uses' => 'Api\v1\SuratController@show'
     ]);
+
+    Route::get('get-tafsir/{nomor}', [
+        'as' => 'get-tafsir-by-nomor',
+        'uses' => 'Api\v1\SuratController@tafsir'
+    ]);
 });
