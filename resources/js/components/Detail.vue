@@ -19,14 +19,19 @@
                                 class="btn btn-light border-dark hover-scale p-2 text-sm font-weight-bold ml-1">📃Tafsir
                             </button>
                         </router-link>
+                        <button
+                            class="btn btn-outline-dark border-button-active-light hover-scale p-2 text-sm font-weight-bold toggle-sound-full paused bg-white"
+                            @click="visible = !visible"
+                            >Tampilkan / Sembunyikan Lafadz Latin</button>
                     </p>
                 </div>
             </div>
         </div>
         <div class="d-flex flex-wrap mt-2 bg-primary-green-light bg-success">
             <div class="w-100 p-1">
-                <div class="px-3 text-sm text-white text-center">
+                <div class="px-3 text-sm text-white">
                     <p>
+                        Pilih Qari':
                         <select v-model="selectedOption" class="form form-control">
                             <option value="01">Abdullah Al Juhany</option>
                             <option value="02">Abdul Muhsin Al Qasim</option>
@@ -45,6 +50,15 @@
                 </div>
             </div>
         </div>
+
+        <div class="row mt-3 mb-2">
+            <div class="col-12 col-md-12 col-lg-12">
+                <div class="p-4 bg-light border border-success text-white text-center" style="color:black !important;font-size:30px;">
+                    بِسْــــــــــــــــــمِ اللهِ الرَّحْمَنِ الرَّحِيْمِ
+                </div>
+            </div>
+        </div>
+        
         <div class="col-md-12 mb-2" v-for="(s, index) in dataAyat" :key="index">
             <div class="p-4 bg-light border border-success">
                 <p class="mb-5 text-success">{{ nomor }}:{{ s.nomorAyat }}</p>
@@ -55,7 +69,7 @@
                         @click="toggleSoundAyat(index)">{{ s.teksArab }}</button>
                 </p>
 
-                <p class="text-end text-primary-hover-light text-sm font-semibold">{{ s.teksLatin }}</p>
+                <p class="text-end text-primary-hover-light text-sm font-semibold" v-if="visible">{{ s.teksLatin }}</p>
                 <div class="flex py-2 items-center">
                     <div class="flex-grow border-top border-success"></div>
                 </div>
@@ -65,6 +79,14 @@
     </div>
 
 </template>
+
+<style scoped>
+.isHidden {
+    background-color: grey;
+}
+
+</style>
+
 <script>
 export default {
     name: "Detail",
@@ -75,7 +97,8 @@ export default {
             nomor: null,
             selectedOption: '05',
             audio: '',
-            audioFull: ''
+            audioFull: '',
+            visible: true
         }
     },
     mounted() {
